@@ -178,7 +178,7 @@ SOFTWARE.
 <!-- MARKDOWN LINKS & IMAGES -->
 [build-shield]: https://github.com/klaasnicolaas/python-odp-stockholm/actions/workflows/tests.yaml/badge.svg
 [build-url]: https://github.com/klaasnicolaas/python-odp-stockholm/actions/workflows/tests.yaml
-[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-odp-stockholm/branch/main/graph/badge.svg?token=TOKEN
+[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-odp-stockholm/branch/main/graph/badge.svg?token=ZMROLN54BK
 [codecov-url]: https://codecov.io/gh/klaasnicolaas/python-odp-stockholm
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/python-odp-stockholm.svg
 [commits-url]: https://github.com/klaasnicolaas/python-odp-stockholm/commits/main
@@ -188,7 +188,7 @@ SOFTWARE.
 [downloads-url]: https://pypistats.org/packages/odp-stockholm
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/python-odp-stockholm.svg
 [license-shield]: https://img.shields.io/github/license/klaasnicolaas/python-odp-stockholm.svg
-[maintainability-shield]: https://api.codeclimate.com/v1/badges/TOKEN/maintainability
+[maintainability-shield]: https://api.codeclimate.com/v1/badges/181c219e4ac665fda7cd/maintainability
 [maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-odp-stockholm/maintainability
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
