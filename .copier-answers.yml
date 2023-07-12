@@ -1,0 +1,18 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.1.0-1-g213cbbf
+_src_path: ./
+author_email: hello@student-techlife.com
+author_name: Klaas Schoute
+github_sponsors: true
+github_username: klaasnicolaas
+initial_commit: false
+package_name: odp_stockholm
+project_name: ODP Stockholm
+project_short_description: Asynchronous Python client providing Open Data information
+    of Stockholm
+project_slug: odp-stockholm
+run_poetry_install: false
+setup_pre_commit: false
+software_license: MIT License
+tweet_on_release: true
+twitter_username: klaasnicolaas
