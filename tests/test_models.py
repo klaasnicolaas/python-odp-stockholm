@@ -1,4 +1,6 @@
 """Test the models for ODP Stockholm."""
+from __future__ import annotations
+
 from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
