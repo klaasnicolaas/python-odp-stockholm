@@ -191,7 +191,7 @@ SOFTWARE.
 [maintainability-shield]: https://api.codeclimate.com/v1/badges/181c219e4ac665fda7cd/maintainability
 [maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-odp-stockholm/maintainability
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
-[project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
 [pypi]: https://pypi.org/project/odp-stockholm/
 [python-versions-shield]: https://img.shields.io/pypi/pyversions/odp-stockholm
 [releases-shield]: https://img.shields.io/github/release/klaasnicolaas/python-odp-stockholm.svg
