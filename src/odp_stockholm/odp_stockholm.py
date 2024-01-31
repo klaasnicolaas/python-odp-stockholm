@@ -51,6 +51,7 @@ class ParkingStockholm:
                 communicating with the Open Data Platform API of Stockholm.
             ODPStockholmError: Received an unexpected response from
                 the Open Data Platform API of Stockholm.
+
         """
         version = metadata.version(__package__)
         url = URL.build(
@@ -111,6 +112,7 @@ class ParkingStockholm:
         Returns:
         -------
             A list of DisabledParking objects.
+
         """
         locations = await self._request(
             "prorelsehindrad/all",
@@ -135,6 +137,7 @@ class ParkingStockholm:
         Returns
         -------
             The Open Data Platform Stockholm object.
+
         """
         return self
 
@@ -144,5 +147,6 @@ class ParkingStockholm:
         Args:
         ----
             _exc_info: Exec type.
+
         """
         await self.close()
