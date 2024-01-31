@@ -37,6 +37,7 @@ class DisabledParking:
         Returns:
         -------
             An DisabledParking object.
+
         """
         attr = data["properties"]
         return cls(
@@ -72,6 +73,7 @@ def strptime(date_string: str, date_format: str, default: None = None) -> Any:
     Returns:
     -------
         The datetime object.
+
     """
     try:
         return datetime.strptime(date_string, date_format).astimezone(
