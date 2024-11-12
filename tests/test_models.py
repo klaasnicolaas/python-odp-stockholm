@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from aresponses import ResponsesMockServer
+from syrupy.assertion import SnapshotAssertion
 
 from . import load_fixtures
 
@@ -13,7 +14,9 @@ if TYPE_CHECKING:
 
 
 async def test_all_disabled_parkings(
-    aresponses: ResponsesMockServer, odp_stockholm_client: ParkingStockholm
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    odp_stockholm_client: ParkingStockholm,
 ) -> None:
     """Test all disabled parkings function."""
     aresponses.add(
@@ -27,4 +30,4 @@ async def test_all_disabled_parkings(
         ),
     )
     parking: list[DisabledParking] = await odp_stockholm_client.disabled_parkings()
-    assert parking is not None
+    assert parking == snapshot
