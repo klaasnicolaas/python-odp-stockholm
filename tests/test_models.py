@@ -2,15 +2,19 @@
 
 from __future__ import annotations
 
-from aiohttp import ClientSession
-from aresponses import ResponsesMockServer
+from typing import TYPE_CHECKING
 
-from odp_stockholm import DisabledParking, ParkingStockholm
+from aresponses import ResponsesMockServer
 
 from . import load_fixtures
 
+if TYPE_CHECKING:
+    from odp_stockholm import DisabledParking, ParkingStockholm
 
-async def test_all_disabled_parkings(aresponses: ResponsesMockServer) -> None:
+
+async def test_all_disabled_parkings(
+    aresponses: ResponsesMockServer, odp_stockholm_client: ParkingStockholm
+) -> None:
     """Test all disabled parkings function."""
     aresponses.add(
         "openparking.stockholm.se",
@@ -22,7 +26,5 @@ async def test_all_disabled_parkings(aresponses: ResponsesMockServer) -> None:
             text=load_fixtures("disabled_parking.json"),
         ),
     )
-    async with ClientSession() as session:
-        client = ParkingStockholm(api_key="test", session=session)
-        parking: list[DisabledParking] = await client.disabled_parkings()
-        assert parking is not None
+    parking: list[DisabledParking] = await odp_stockholm_client.disabled_parkings()
+    assert parking is not None
