@@ -14,7 +14,9 @@ from odp_stockholm.exceptions import ODPStockholmConnectionError, ODPStockholmEr
 from . import load_fixtures
 
 
-async def test_json_request(aresponses: ResponsesMockServer) -> None:
+async def test_json_request(
+    aresponses: ResponsesMockServer, odp_stockholm_client: ParkingStockholm
+) -> None:
     """Test JSON response is handled correctly."""
     aresponses.add(
         "openparking.stockholm.se",
@@ -26,11 +28,8 @@ async def test_json_request(aresponses: ResponsesMockServer) -> None:
             text=load_fixtures("disabled_parking.json"),
         ),
     )
-    async with ClientSession() as session:
-        client = ParkingStockholm(api_key="test", session=session)
-        response = await client._request("test")
-        assert response is not None
-        await client.close()
+    await odp_stockholm_client._request("test")
+    await odp_stockholm_client.close()
 
 
 async def test_internal_session(aresponses: ResponsesMockServer) -> None:
@@ -77,7 +76,9 @@ async def test_timeout(aresponses: ResponsesMockServer) -> None:
             assert await client._request("test")
 
 
-async def test_content_type(aresponses: ResponsesMockServer) -> None:
+async def test_content_type(
+    aresponses: ResponsesMockServer, odp_stockholm_client: ParkingStockholm
+) -> None:
     """Test request content type error from Open Data Platform API of Stockholm."""
     aresponses.add(
         "openparking.stockholm.se",
@@ -88,11 +89,8 @@ async def test_content_type(aresponses: ResponsesMockServer) -> None:
             headers={"Content-Type": "blabla/blabla"},
         ),
     )
-
-    async with ClientSession() as session:
-        client = ParkingStockholm(api_key="test", session=session)
-        with pytest.raises(ODPStockholmError):
-            assert await client._request("test")
+    with pytest.raises(ODPStockholmError):
+        assert await odp_stockholm_client._request("test")
 
 
 async def test_client_error() -> None:
