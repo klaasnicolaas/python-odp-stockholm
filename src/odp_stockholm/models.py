@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
-
-import pytz
 
 
 @dataclass
@@ -50,35 +48,15 @@ class DisabledParking:
             district=attr["CITY_DISTRICT"],
             parking_rate=attr["PARKING_RATE"],
             parking_rules=attr["RDT_URL"],
-            valid_from=strptime(
+            valid_from=datetime.strptime(
                 attr.get("VALID_FROM"),
                 "%Y-%m-%dT%H:%M:%SZ",
-            ),
-            valid_to=strptime(
+            ).replace(tzinfo=UTC),
+            valid_to=datetime.strptime(
                 attr.get("VALID_TO"),
                 "%Y-%m-%dT%H:%M:%SZ",
-            ),
+            ).replace(tzinfo=UTC)
+            if attr.get("VALID_TO")
+            else None,
             coordinates=data["geometry"]["coordinates"],
         )
-
-
-def strptime(date_string: str, date_format: str, default: None = None) -> Any:
-    """Strptime function with default value.
-
-    Args:
-    ----
-        date_string: The date string.
-        date_format: The format of the date string.
-        default: The default value.
-
-    Returns:
-    -------
-        The datetime object.
-
-    """
-    try:
-        return datetime.strptime(date_string, date_format).astimezone(
-            pytz.timezone("UTC"),
-        )
-    except (ValueError, TypeError):
-        return default
