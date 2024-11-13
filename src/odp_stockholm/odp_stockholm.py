@@ -15,6 +15,8 @@ from yarl import URL
 from .exceptions import ODPStockholmConnectionError, ODPStockholmError
 from .models import DisabledParking
 
+VERSION = metadata.version(__package__)
+
 
 @dataclass
 class ParkingStockholm:
@@ -54,7 +56,6 @@ class ParkingStockholm:
                 the Open Data Platform API of Stockholm.
 
         """
-        version = metadata.version(__package__)
         url = URL.build(
             scheme="https",
             host="openparking.stockholm.se",
@@ -65,7 +66,7 @@ class ParkingStockholm:
 
         headers = {
             "Accept": "application/json",
-            "User-Agent": f"PythonODPStockholm/{version}",
+            "User-Agent": f"PythonODPStockholm/{VERSION}",
         }
 
         if self.session is None:
