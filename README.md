@@ -15,9 +15,7 @@
 
 [![Build Status][build-shield]][build-url]
 [![Typing Status][typing-shield]][typing-url]
-[![Maintainability][maintainability-shield]][maintainability-url]
 [![Code Coverage][codecov-shield]][codecov-url]
-
 
 Asynchronous Python client for the open datasets of Stockholm (Sweden).
 
@@ -192,8 +190,6 @@ SOFTWARE.
 [downloads-url]: https://pypistats.org/packages/odp-stockholm
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/python-odp-stockholm.svg
 [license-shield]: https://img.shields.io/github/license/klaasnicolaas/python-odp-stockholm.svg
-[maintainability-shield]: https://api.codeclimate.com/v1/badges/181c219e4ac665fda7cd/maintainability
-[maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-odp-stockholm/maintainability
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2025.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
 [pypi]: https://pypi.org/project/odp-stockholm/
