@@ -15,7 +15,7 @@ from yarl import URL
 from .exceptions import ODPStockholmConnectionError, ODPStockholmError
 from .models import DisabledParking
 
-VERSION = metadata.version(__package__)
+VERSION = metadata.version("odp-stockholm")
 
 
 @dataclass
