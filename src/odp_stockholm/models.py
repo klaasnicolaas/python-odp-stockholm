@@ -4,7 +4,35 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from enum import StrEnum
 from typing import Any
+
+
+class ParkingType(StrEnum):
+    """Selections supported by the complete parking collection API."""
+
+    DISABLED = "prorelsehindrad"
+
+
+@dataclass
+class ParkingSpot:
+    """A source feature retaining its identity, geometry and every source field."""
+
+    spot_id: str
+    geometry: dict[str, Any]
+    street: str | None
+    source_attributes: dict[str, Any]
+
+
+@dataclass
+class ParkingCollection:
+    """A complete source selection, never a capped inspection result."""
+
+    records: list[ParkingSpot]
+    total_count: int
+    pages_fetched: int
+    source_version: str | None
+    complete: bool = True
 
 
 @dataclass
@@ -12,9 +40,9 @@ class DisabledParking:
     """Object representing an DisabledParking model response from the API."""
 
     location_id: int
-    location_type: str
+    location_type: str | None
 
-    number: int
+    number: int | None
     street: str
     address: str
     district: str
@@ -41,8 +69,8 @@ class DisabledParking:
         attr = data["properties"]
         return cls(
             location_id=attr["FID"],
-            location_type=attr["VF_PLATS_TYP"],
-            number=attr["EXTENT_NO"],
+            location_type=attr.get("VF_PLATS_TYP"),
+            number=attr.get("VF_PLATSER"),
             street=attr["STREET_NAME"],
             address=attr["ADDRESS"],
             district=attr["CITY_DISTRICT"],
