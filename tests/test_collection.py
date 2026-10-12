@@ -85,7 +85,16 @@ async def test_inconsistent_metadata_is_rejected(field: str, value: object) -> N
 
 @pytest.mark.parametrize(
     "mutation",
-    ["duplicate", "missing-fid", "bad-fid", "bad-id", "point", "street", "properties"],
+    [
+        "duplicate",
+        "missing-fid",
+        "bad-fid",
+        "bad-id",
+        "point",
+        "street",
+        "properties",
+        "feature-type",
+    ],
 )
 async def test_invalid_features_are_rejected(mutation: str) -> None:
     """Never deliver malformed or duplicate features."""
@@ -103,6 +112,8 @@ async def test_invalid_features_are_rejected(mutation: str) -> None:
         feature["geometry"]["type"] = "Point"
     elif mutation == "street":
         feature["properties"]["STREET_NAME"] = 3
+    elif mutation == "feature-type":
+        feature["type"] = "wrong"
     else:
         feature["properties"] = None
     async with ParkingStockholm(api_key="fake") as client:
@@ -143,7 +154,11 @@ async def test_non_json_authentication_response_does_not_expose_body(
     aresponses: ResponsesMockServer,
 ) -> None:
     """Unexpected responses and malformed JSON never enter a collection."""
-    for content_type, body in [("text/html", "secret"), ("application/json", "")]:
+    for content_type, body in [
+        ("text/html", "secret"),
+        ("application/json", ""),
+        ("application/json", "{"),
+    ]:
         aresponses.add(
             "openparking.stockholm.se",
             "/LTF-Tolken/v1/prorelsehindrad/all",
@@ -166,3 +181,17 @@ async def test_inspection_capacity_uses_optional_bay_count() -> None:
     assert DisabledParking.from_json(feature).number is None
     feature["properties"]["VF_PLATSER"] = 2
     assert DisabledParking.from_json(feature).number == 2
+
+
+@pytest.mark.parametrize("parking_type", ["pbuss"])
+async def test_unknown_selection_never_requests_source(
+    parking_type: ParkingType,
+) -> None:
+    """A different regulatory selection cannot be mislabeled as disabled parking."""
+    async with ParkingStockholm(api_key="fake") as client:
+        with (
+            patch.object(client, "_request", AsyncMock()) as request,
+            pytest.raises(ValueError, match="Unsupported Stockholm parking selection"),
+        ):
+            await client.parking_collection(parking_type=parking_type)
+    request.assert_not_awaited()
