@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import socket
+from copy import deepcopy
 from dataclasses import dataclass
 from importlib import metadata
 from typing import Any, Self
@@ -13,7 +14,7 @@ from aiohttp.hdrs import METH_GET
 from yarl import URL
 
 from .exceptions import ODPStockholmConnectionError, ODPStockholmError
-from .models import DisabledParking
+from .models import DisabledParking, ParkingCollection, ParkingSpot, ParkingType
 
 VERSION = metadata.version("odp-stockholm")
 
@@ -92,14 +93,97 @@ class ParkingStockholm:
 
         content_type = response.headers.get("Content-Type", "")
         if "application/json" not in content_type:
-            text = await response.text()
             msg = "Unexpected content type response from the Open Data Platform API"
-            raise ODPStockholmError(
-                msg,
-                {"Content-Type": content_type, "response": text},
-            )
+            raise ODPStockholmError(msg)
 
-        return await response.json()
+        try:
+            return await response.json()
+        except ValueError:
+            msg = "Invalid JSON response from the Open Data Platform API"
+            raise ODPStockholmError(msg) from None
+
+    async def parking_collection(
+        self,
+        *,
+        parking_type: ParkingType = ParkingType.DISABLED,
+        max_records: int = 10000,
+    ) -> ParkingCollection:
+        """Retrieve all permit-holder regulations with count and identity checks.
+
+        The endpoint supports a single full response. A safety ceiling is never
+        permission to truncate. Response time is not a dataset revision; validity
+        dates and source identifiers carry no promise of long-term stability.
+        """
+        if parking_type != ParkingType.DISABLED:
+            msg = "Unsupported Stockholm parking selection"
+            raise ValueError(msg)
+        if type(max_records) is not int or max_records < 1:
+            msg = "max_records must be a positive integer"
+            raise ValueError(msg)
+        data = await self._request(
+            "prorelsehindrad/all",
+            params={
+                "maxFeatures": max_records + 1,
+                "outputFormat": "json",
+                "apiKey": self.api_key,
+            },
+        )
+        try:
+            return self._collection(data, max_records)
+        except (ValueError, TypeError, KeyError, AttributeError):
+            msg = "Incomplete or malformed Stockholm parking collection"
+            raise ODPStockholmError(msg) from None
+
+    @staticmethod
+    def _collection(data: Any, max_records: int) -> ParkingCollection:
+        """Validate metadata and preserve original features without lossy parsing."""
+        if (
+            not isinstance(data, dict)
+            or data.get("type") != "FeatureCollection"
+            or data.get("crs", {}).get("properties", {}).get("name")
+            != "urn:ogc:def:crs:EPSG::4326"
+            or not isinstance(data.get("features"), list)
+        ):
+            raise ValueError
+        features = data["features"]
+        count = data["numberMatched"]
+        if (
+            type(count) is not int
+            or not 0 <= count <= max_records
+            or type(data["numberReturned"]) is not int
+            or data["numberReturned"] != count
+            or type(data["totalFeatures"]) is not int
+            or data["totalFeatures"] != count
+            or len(features) != count
+        ):
+            raise ValueError
+        records = []
+        seen = set()
+        for feature in features:
+            if not isinstance(feature, dict) or feature.get("type") != "Feature":
+                raise ValueError
+            properties = feature["properties"]
+            geometry = feature["geometry"]
+            fid = properties["FID"]
+            spot_id = feature["id"]
+            if (
+                type(fid) is not int
+                or fid < 1
+                or spot_id != f"LTFR_P_RORELSEHINDRADE.{fid}"
+                or spot_id in seen
+                or not isinstance(geometry, dict)
+                or geometry.get("type") not in {"LineString", "MultiLineString"}
+                or not isinstance(geometry.get("coordinates"), list)
+            ):
+                raise ValueError
+            street = properties.get("STREET_NAME")
+            if street is not None and not isinstance(street, str):
+                raise ValueError
+            seen.add(spot_id)
+            records.append(
+                ParkingSpot(spot_id, deepcopy(geometry), street, deepcopy(feature))
+            )
+        return ParkingCollection(records, count, 1, None)
 
     async def disabled_parkings(
         self,
