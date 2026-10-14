@@ -585,7 +585,6 @@ dev = [
     { name = "ruff" },
     { name = "syrupy" },
     { name = "ty" },
-    { name = "types-pytz" },
     { name = "yamllint" },
     { name = "zizmor" },
 ]
@@ -610,7 +609,6 @@ dev = [
     { name = "ruff", specifier = "==0.17.0" },
     { name = "syrupy", specifier = "==6.1.1" },
     { name = "ty", specifier = "==0.0.87" },
-    { name = "types-pytz", specifier = "==2023.4.0.20240130" },
     { name = "yamllint", specifier = "==1.38.0" },
     { name = "zizmor", specifier = "==1.30.1" },
 ]
@@ -932,15 +930,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/79/39/09f9274119899ed4e15630a544735c31b32f6bbaeea4c40a788cecf8df3d/ty-0.0.87-py3-none-win32.whl", hash = "sha256:12c85c47d62d3b03c3ef00e1e74a31788aac5de3102d86b687d928d889cfbe83", size = 13137336, upload-time = "2026-10-13T23:06:59.816Z" },
     { url = "https://files.pythonhosted.org/packages/4e/6e/ecfc716c98bb1eeac9d8743221403c5e7f2f0ed69858af881a0e5b775739/ty-0.0.87-py3-none-win_amd64.whl", hash = "sha256:767219b8fedd2f48875c1ea3557f39734642073a2e039c6ab67ce5a50b65ddf0", size = 13660330, upload-time = "2026-10-13T23:07:02.568Z" },
     { url = "https://files.pythonhosted.org/packages/94/89/aa0eb234360cb6c8efc6ac45694000dfe3c3e590a30e87f2f9631190d339/ty-0.0.87-py3-none-win_arm64.whl", hash = "sha256:db4aa3a464c43d155ac8a3387a76173183ce4c141a8de1b6cb956e6a5a5e7d52", size = 13217514, upload-time = "2026-10-13T23:07:06.177Z" },
-]
-
-[[package]]
-name = "types-pytz"
-version = "2023.4.0.20240130"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ac/de/583d9ab1c5599d06361459ec663447e8a787e2caf0967243725be767e70f/types-pytz-2023.4.0.20240130.tar.gz", hash = "sha256:33676a90bf04b19f92c33eec8581136bea2f35ddd12759e579a624a006fd387a", size = 5191, upload-time = "2024-01-30T02:13:12.495Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/cd/018e825d60d86c1798c7acccfcb3d7c31227793445e4b87423498e8c486d/types_pytz-2023.4.0.20240130-py3-none-any.whl", hash = "sha256:6ce76a9f8fd22bd39b01a59c35bfa2db39b60d11a2f77145e97b730de7e64fe0", size = 5073, upload-time = "2024-01-30T02:13:10.766Z" },
 ]
 
 [[package]]
