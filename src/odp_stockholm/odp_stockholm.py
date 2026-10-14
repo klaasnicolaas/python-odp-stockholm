@@ -165,12 +165,12 @@ class ParkingStockholm:
             properties = feature["properties"]
             geometry = feature["geometry"]
             fid = properties["FID"]
-            spot_id = feature["id"]
+            record_id = feature["id"]
             if (
                 type(fid) is not int
                 or fid < 1
-                or spot_id != f"LTFR_P_RORELSEHINDRADE.{fid}"
-                or spot_id in seen
+                or record_id != f"LTFR_P_RORELSEHINDRADE.{fid}"
+                or record_id in seen
                 or not isinstance(geometry, dict)
                 or geometry.get("type") not in {"LineString", "MultiLineString"}
                 or not isinstance(geometry.get("coordinates"), list)
@@ -179,9 +179,9 @@ class ParkingStockholm:
             street = properties.get("STREET_NAME")
             if street is not None and not isinstance(street, str):
                 raise ValueError
-            seen.add(spot_id)
+            seen.add(record_id)
             records.append(
-                ParkingSpot(spot_id, deepcopy(geometry), street, deepcopy(feature))
+                ParkingSpot(record_id, deepcopy(geometry), street, deepcopy(feature))
             )
         return ParkingCollection(records, count, 1, None)
 

@@ -18,7 +18,7 @@ class ParkingType(StrEnum):
 class ParkingSpot:
     """A source feature retaining its identity, geometry and every source field."""
 
-    spot_id: str
+    id: str
     geometry: dict[str, Any]
     street: str | None
     source_attributes: dict[str, Any]
