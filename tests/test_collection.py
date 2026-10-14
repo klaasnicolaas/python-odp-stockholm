@@ -47,7 +47,7 @@ async def test_complete_collection_preserves_source_claims() -> None:
     assert result.total_count == 5
     assert result.pages_fetched == 1
     assert result.source_version is None
-    assert result.records[0].spot_id == "LTFR_P_RORELSEHINDRADE.6205721"
+    assert result.records[0].id == "LTFR_P_RORELSEHINDRADE.6205721"
     assert result.records[0].geometry == data["features"][0]["geometry"]
     assert result.records[0].source_attributes == data["features"][0]
     assert result.records[1].street is None
