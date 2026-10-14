@@ -1,0 +1,7 @@
+# Complete parking collections
+
+[Back to the README](../README.md)
+
+For complete retrieval use `await client.parking_collection(parking_type=ParkingType.DISABLED, max_records=10000)`. Import `ParkingType` from `odp_stockholm`. This returns `ParkingCollection(records, total_count, pages_fetched, source_version, complete=True)` after verifying source counts, the safety ceiling, WGS84 CRS and unique original feature IDs. Each `ParkingSpot` retains `id`, the complete LineString or MultiLineString `geometry`, nullable `street`, and the original feature including all properties in `source_attributes`. A malformed, truncated or inconsistent response raises `ODPStockholmError`; it never returns a partial collection. An explicitly counted empty selection may be complete.
+
+The API represents interpreted local traffic regulations, not individually surveyed bays. IDs were unchanged across full/repeated/street requests on 2026-10-12; continuity after a source rebuild is not guaranteed. `source_version` remains `None`: response `timeStamp` is retrieval time, and `VALID_FROM`/`VALID_TO` describe validity rather than maintenance time. Preserve these fields and the original geometry when publishing derived information. `disabled_parkings(limit=...)` remains a capped inspection method, without completeness evidence. Its `number` now reads nullable `VF_PLATSER`, correcting the old interpretation of `EXTENT_NO`; consumers must accept unknown capacity.
